@@ -3,14 +3,14 @@ import { State, decrement, increment } from "./reducer";
 
 export function Counter(props: {
   value: number;
-  increment: () => void;
-  decrement: () => void;
+  increment: (n: number) => void;
+  decrement: (n: number) => void;
 }) {
   return (
     <div>
-      <button onClick={props.decrement}>-</button>
+      <button onClick={() => props.decrement(1)}>-</button>
       <span> {props.value} </span>
-      <button onClick={props.increment}>+</button>
+      <button onClick={() => props.increment(1)}>+</button>
     </div>
   );
 }

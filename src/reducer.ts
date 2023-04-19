@@ -1,6 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk, ThunkAction } from "@reduxjs/toolkit";
+import { getCountFromServer } from "./countService";
 
-const initialState = { count: 0 };
+export const fetchCount = createAsyncThunk('counter/fetchCount', () => getCountFromServer())
+
+const initialState = { count: 0, isFetching: false };
+
 const counterSlice = createSlice({
   name: "counter",
   initialState,
@@ -12,6 +16,15 @@ const counterSlice = createSlice({
       state.count -= action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCount.pending, state => {
+        state.isFetching = true
+    })
+    builder.addCase(fetchCount.fulfilled, (state, action) => {
+        state.count = action.payload
+        state.isFetching = false
+    })
+  }
 });
 export const { increment, decrement } = counterSlice.actions;
 export const counterReducer = counterSlice.reducer;

@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-import { State, decrement, increment, fetchCount } from "./reducer";
-import { AnyAction } from "@reduxjs/toolkit";
+import { decrement, increment, fetchCount } from "./reducer";
+import { useAppDispatch, useAppSelector } from "./store";
 
 export function Counter(props: {
   value: number;
@@ -20,9 +19,9 @@ export function Counter(props: {
 }
 
 export function ConnectedCounter() {
-  const dispatch = useDispatch();
-  const value = useSelector<State, number>((state) => state.count);
-  const isFetching = useSelector<State, boolean>((state) => state.isFetching);
+  const dispatch = useAppDispatch();
+  const value = useAppSelector((state) => state.count);
+  const isFetching = useAppSelector((state) => state.isFetching);
   return (
     <Counter
       value={value}

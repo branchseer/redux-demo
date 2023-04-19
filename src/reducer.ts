@@ -20,10 +20,18 @@ const decrement = (delta: number): CounterAction => ({
   payload: delta,
 });
 
+// action assertions
+function isCounterAction(action: AnyAction): action is CounterAction {
+    return action.type === INCREMENT || action.type === DECREMENT
+}
+
 // reducer
 const initialState = { count: 0 };
 
 const counterReducer = (state = initialState, action: AnyAction) => {
+  if (!isCounterAction(action)) {
+    return state
+  }
   switch (action.type) {
     case INCREMENT:
       return { ...state, count: state.count + action.delta, };

@@ -1,46 +1,19 @@
-import { AnyAction } from "redux";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// action types
-const INCREMENT = 'INCREMENT';
-const DECREMENT = 'DECREMENT';
-
-interface CounterAction {
-    type: typeof INCREMENT | typeof DECREMENT,
-    payload: number
-}
-
-// action creators
-const increment = (delta: number): CounterAction => ({
-  type: INCREMENT,
-  payload: delta,
-});
-
-const decrement = (delta: number): CounterAction => ({
-  type: DECREMENT,
-  payload: delta,
-});
-
-// action assertions
-function isCounterAction(action: AnyAction): action is CounterAction {
-    return action.type === INCREMENT || action.type === DECREMENT
-}
-
-// reducer
 const initialState = { count: 0 };
+const counterSlice = createSlice({
+  name: "counter",
+  initialState,
+  reducers: {
+    increment(state, action: PayloadAction<number>) {
+      state.count += action.payload;
+    },
+    decrement(state, action: PayloadAction<number>) {
+      state.count -= action.payload;
+    },
+  },
+});
+export const { increment, decrement } = counterSlice.actions;
+export const counterReducer = counterSlice.reducer;
 
-const counterReducer = (state = initialState, action: AnyAction) => {
-  if (!isCounterAction(action)) {
-    return state
-  }
-  switch (action.type) {
-    case INCREMENT:
-      return { ...state, count: state.count + action.payload, };
-    case DECREMENT:
-      return { ...state, count: state.count - action.payload, };
-    default:
-      return state;
-  }
-};
-
-export { increment, decrement, counterReducer };
 export type State = typeof initialState;

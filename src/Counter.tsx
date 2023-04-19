@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { State, decrement, increment } from "./reducer";
 
 export function Counter(props: {
@@ -15,13 +15,14 @@ export function Counter(props: {
   );
 }
 
-const mapStateToProps = (state: State) => ({
-  value: state.count,
-});
-
-const mapDispatchToProps = { increment, decrement };
-
-export const ConnectedCounter = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Counter);
+export function ConnectedCounter() {
+  const dispatch = useDispatch();
+  const value = useSelector<State, number>((state) => state.count);
+  return (
+    <Counter
+      value={value}
+      increment={(n) => dispatch(increment(n))}
+      decrement={(n) => dispatch(decrement(n))}
+    />
+  );
+}
